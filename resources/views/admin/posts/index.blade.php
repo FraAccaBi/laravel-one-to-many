@@ -1,80 +1,57 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between py-4">
-        <h1>All Posts</h1>
-        <div><a href="{{route('admin.posts.create')}}" class="btn btn-primary">Add Post</a></div>
-    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">{{ __('Post list') }}</div>
+                @foreach ($posts as $post)
+                <div class="card-body d-flex align-items-center justify-content-around row">
+                    <h4 class="col-2">{{$post->title}}</h4>
+                    <img class="col-2" height="60px" src="{{$post->cover_img}}" alt="">
+                    <p class="col-6">{{$post->content}}</p>
+                    <em>Category: {{ $post->category ? $post->category->name : 'Uncategorized'}}</em>
+                    <div class="col-2 flex-column">
+                        <a href="{{route('admin.posts.show', $post->id)}}">View</a>
+                        <a href="{{route('admin.posts.edit', $post->id)}}">Edit</a>
 
-    @include('partials.session_message')
-    <table class="table table-striped table-inverse table-responsive">
-        <thead class="thead-inverse">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Cover Image</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="$('#delete-post-{{$post->id}}').modal('toggle')">Delete
+                        </button>
+                    </div>
+                 </div>
 
-        <tbody>
-            @forelse($posts as $post)
-            <tr>
-                <td scope="row">{{$post->id}}</td>
-                <td>{{$post->title}}</td>
-                <td>{{$post->slug}}</td>
-                <td><img width="150" src="{{$post->cover_image}}" alt="Cover image {{$post->title}}"></td>
-                <td>
-                    <a class="btn btn-primary text-white btn-sm" href="{{route('admin.posts.show', $post->slug)}}">View</a>
-                    <a class="btn btn-secondary text-white btn-sm" href="{{route('admin.posts.edit', $post->slug)}}">Edit</a>
-
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-post-{{$post->id}}">
-                        Delete
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="delete-post-{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitle-{{$post->id}}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Delete current</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete this post?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- Modal -->
+                <div class="modal fade" id="delete-post-{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitle-{{$post->id}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete current</h5>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this post?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="$('#delete-post-{{$post->id}}').modal('toggle')">Close</button>
 
 
-                                    <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
-                                        @csrf
-                                        @method('DELETE')
+                                <form action="{{route('admin.posts.destroy', $post->id)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
 
-                                        <button type="submit" class="btn btn-danger">Confirm</button>
-                                    </form>
+                                    <button type="submit" class="btn btn-danger">Confirm</button>
+                                </form>
 
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
+                @endforeach
 
-                </td>
-            </tr>
-
-            @empty
-            <tr>
-                <td scope="row">No Posts! Create your first post <a href="#">Create post</a></td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

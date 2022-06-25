@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,33 +14,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Auth::routes();
 
 
 Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
-    // Admin Dashboard
-    Route::get('/', 'HomeController@index')->name('dashboard');
-    // Admin posts
-    Route::resource('posts', 'PostController')->parameters([
-        'posts' => 'post:slug'
-    ]);
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController')->parameters([
         'categories' => 'category:slug'
     ])->except(['show', 'create', 'edit']);
 });
+Route::get('/home', function(){
+    return view('home');
+});
 
-// inseriamola come ultima rotta
-// alla fine del file web.php
+
 Route::get("{any?}", function () {
     return view("guest.home");
 })->where("any", ".*");
-
-
-
-/*
-- close registration
-- Model: Category + Table: categories + Controller: Admin/CategoryController + One to Many
-- Model: Tag + Table: tags + Controller: Admin/TagController + Many To Many
-
-
-*/

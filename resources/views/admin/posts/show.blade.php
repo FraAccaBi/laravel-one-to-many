@@ -1,21 +1,16 @@
-@extends('layouts.admin')
-
+@extends('layouts.app')
 
 @section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <img src="{{$post->cover_img}}" alt="" srcset="">
+                <h1>{{$post->title}}</h1>
+                <p>{{$post->content}}</p>
 
-<div class="posts d-flex py-4">
-    <img class="img-fluid" src="{{$post->cover_image}}" alt="{{$post->title}}">
-
-    <div class="post-data px-4">
-        <h1>{{$post->title}}</h1>
-        <div class="metadata">
-            Category: {{$post->category ? $post->category->name : 'Uncategorized'}}
-        </div>
-        <div class="content">
-            {{$post->content}}
+            </div>
         </div>
     </div>
 </div>
-
-
 @endsection

@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Category;
 use Illuminate\Database\Seeder;
+use App\Category;
 use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
@@ -13,15 +13,12 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
-
-        $categories = ['FrontEnd', 'Backend', 'Programming', 'FullStack', 'Design', 'Ops'];
-
+        $categories = ['Programming', 'Automation', 'Web design', 'Best Practices'];
         foreach ($categories as $category) {
-            $new_cat = new Category();
-            $new_cat->name = $category;
-            $new_cat->slug = Str::slug($new_cat->name);
-            $new_cat->save();
+            $cat = new Category();
+            $cat->name = $category;
+            $cat->slug = Str::slug($category);
+            $cat->save();
         }
     }
 }

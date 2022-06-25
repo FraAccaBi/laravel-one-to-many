@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -29,9 +27,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
-
-        // Validare
         $val_data = $request->validate([
             'name' => 'required|unique:categories'
         ]);
@@ -48,17 +43,18 @@ class CategoryController extends Controller
     }
 
 
+
+
+
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Category $category)
     {
-        //dd($request->all());
-
         $val_data = $request->validate([
             'name' => ['required', Rule::unique('categories')->ignore($category)]
         ]);
@@ -73,7 +69,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
